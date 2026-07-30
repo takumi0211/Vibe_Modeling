@@ -1,0 +1,364 @@
+<meta charset="utf-8">
+<title>環境解析レポート — Candela HPシェル</title>
+<style>
+  @page { size: A4; margin: 11mm 12mm 9mm 12mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-size: 7.7pt; line-height: 1.40; color: #1a1a1a; margin: 0;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page { page-break-after: always; position: relative; height: 275mm;
+          overflow: hidden; padding-bottom: 6.5mm; }
+  .page:last-child { page-break-after: auto; }
+  h1 { font-size: 17pt; margin: 0 0 1.5mm; letter-spacing: -0.3px; }
+  h2 { font-size: 10.2pt; margin: 3.4mm 0 1.6mm; padding-bottom: 1.2mm;
+       border-bottom: 1.6px solid #1a3a5c; color: #1a3a5c; }
+  h3 { font-size: 8.4pt; margin: 2.6mm 0 1mm; color: #33475b; }
+  p  { margin: 0 0 1.6mm; text-align: justify; }
+  .sub { font-size: 9.5pt; color: #55606b; margin: 0 0 4mm; }
+  .rule { height: 3px; background: #1a3a5c; margin: 0 0 4mm; }
+  table { width: 100%; border-collapse: collapse; font-size: 7.1pt; margin: 0 0 2.2mm; }
+  th, td { border: 0.4px solid #b9c2ca; padding: 0.7mm 1.4mm; vertical-align: top; }
+  th { background: #eef2f6; text-align: left; font-weight: 600; color: #1a3a5c; }
+  td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3mm; }
+  figure { margin: 0 0 2.5mm; }
+  figure img { width: 100%; display: block; border: 0.5px solid #c8ced4; }
+  figcaption { font-size: 6.6pt; color: #55606b; margin-top: 1mm; }
+  .kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5mm; margin: 0 0 3mm; }
+  .kpi div { border: 0.6px solid #b9c2ca; border-top: 2.4px solid #1a3a5c;
+             padding: 1.8mm 2mm; background: #fbfcfd; }
+  .kpi b { display: block; font-size: 12.5pt; line-height: 1.15; color: #1a3a5c;
+           font-variant-numeric: tabular-nums; }
+  .kpi span { font-size: 7pt; color: #55606b; }
+  .note { background: #fff8e8; border-left: 2.6px solid #d99b1c; padding: 1.8mm 2.4mm;
+          font-size: 7.0pt; margin: 0 0 2.2mm; }
+  .warn { background: #fdf0ee; border-left: 2.6px solid #c0503c; padding: 1.8mm 2.4mm;
+          font-size: 7.0pt; margin: 0 0 2.2mm; }
+  .foot { position: absolute; bottom: 0; left: 0; right: 0; font-size: 6.8pt;
+          color: #8a949d; border-top: 0.5px solid #d5dbe0; padding-top: 1.2mm; }
+  ul { margin: 0 0 2mm; padding-left: 4.2mm; }
+  li { margin-bottom: 0.8mm; }
+  code { font-family: "SF Mono", Menlo, monospace; font-size: 7.4pt; background: #eef2f6;
+         padding: 0 0.8mm; border-radius: 1px; }
+</style>
+
+<!-- ══════════════════ PAGE 1 ══════════════════ -->
+<div class="page">
+  <h1>環境解析レポート</h1>
+  <p class="sub">Félix Candela 型 HP シェル（8弁グロインヴォールト）— 年間日射量・室内グレア・自然換気CFD</p>
+  <div class="rule"></div>
+
+  <p>本レポートは、Grasshopper 上で構築した Félix Candela 系の HP（双曲放物面）シェル建築モデルに対して実施した、3種の環境解析の結果をまとめたものである。対象形状は、バレンシア L'Oceanogràfic の <b>Restaurante Submarino</b>（2002年、Candela 構想・Alberto Domingo / Carlos Lázaro 実現）のプロポーションに準拠した8弁の水蓮形シェルである。同建物は Los Manantiales（1958年、ソチミルコ）の直系にあたり、幾何構成は共通で花弁の立ち上がりが大きい点が異なる。解析はいずれも実測ではなくモデルベースであり、材料物性・表面温度・内部発熱は仮定値である。数値は絶対値としてではなく、<b>形状が環境性能に与える傾向</b>を読むためのものとして扱う。</p>
+
+  <div class="grid2">
+    <figure>
+      <img src="../assets/reference_photo.png" style="height:39mm;object-fit:cover;object-position:50% 44%">
+      <figcaption><b>参照実建物</b>／ Restaurante Submarino, L'Oceanogràfic, Valencia。8弁の花弁が池に映り、接地点のあいだをガラスが埋める。本モデルはこの写真のシルエットに合わせてパラメータを調整した。</figcaption>
+    </figure>
+    <figure>
+      <img src="../05_images/model/shell_exterior.png" style="height:39mm;object-fit:cover;object-position:50% 45%">
+      <figcaption><b>解析対象モデル</b>／ 8枚のHP曲面が中央クラウンで交わり、8つの接地点で地面に接する。ガラスは平面形を 0.62 倍に内側オフセットした位置に立つ。</figcaption>
+    </figure>
+  </div>
+
+  <h2>解析サマリー</h2>
+  <div class="kpi">
+    <div><b>1,290</b><span>年間日射量 平均 [kWh/m²]<br>（最大 2,083 / 最小 136）</span></div>
+    <div><b>0.382</b><span>DGP 室内グレア指標<br>（disturbing / 不快域）</span></div>
+    <div><b>265</b><span>換気回数 [ACH]<br>（通過風量 110 m³/s）</span></div>
+    <div><b>0.81</b><span>室内平均風速 [m/s]<br>（断面平均・東西軸）</span></div>
+  </div>
+
+  <table>
+    <tr><th style="width:17%">解析</th><th style="width:26%">ツール／ソルバー</th><th style="width:26%">主要条件</th><th>主要結果</th></tr>
+    <tr>
+      <td><b>年間日射量</b></td>
+      <td>Ladybug Tools 1.72<br>Radiance <code>gendaymtx</code>（Tregenza 145パッチ）</td>
+      <td>EPW通年、解析点 5,264（1mグリッド）、相互反射なし</td>
+      <td>平均 1,290 kWh/m²·年、シェル全体 1.94 GWh/年。北側花弁の上面が最大、南側上面が最小</td>
+    </tr>
+    <tr>
+      <td><b>室内グレア</b></td>
+      <td>Radiance 6.0.2<br><code>rpict</code> 180°魚眼 + <code>evalglare</code> 3.06</td>
+      <td>6/21 17:00、太陽高度 38.1°／方位 270.5°、視点高 1.6 m 西向き</td>
+      <td>DGP 0.382（不快グレア）、鉛直面照度 2,724 lx、最大輝度 2,245 cd/m²。太陽面は直視されない</td>
+    </tr>
+    <tr>
+      <td><b>自然換気CFD</b></td>
+      <td>OpenFOAM v2412<br><code>buoyantBoussinesqSimpleFoam</code> k-ε</td>
+      <td>東風 4.4 m/s、外気 28.3 ℃、8ベイ中2ベイ（東西）開放、758,244セル</td>
+      <td>110 m³/s＝265 ACH。東西軸のみジェットが貫通し南北ロブは 0〜1 m/s で滞留</td>
+    </tr>
+  </table>
+
+  <h2>敷地・気象条件</h2>
+  <div class="grid2">
+    <div>
+      <table>
+        <tr><th style="width:44%">項目</th><th>値</th></tr>
+        <tr><td>気象データ</td><td>ESP_VC_Valencia.AP.082840_TMYx.2011-2025</td></tr>
+        <tr><td>出典</td><td>climate.onebuilding.org（TMYx）</td></tr>
+        <tr><td>緯度・経度</td><td class="n">39.485 °N / −0.4747 °E</td></tr>
+        <tr><td>標高</td><td class="n">62 m</td></tr>
+        <tr><td>解析年時間数</td><td class="n">8,760 h</td></tr>
+      </table>
+    </div>
+    <div>
+      <table>
+        <tr><th style="width:52%">換気検討時間帯（外気 26–32 ℃）</th><th>値</th></tr>
+        <tr><td>該当時間数</td><td class="n">1,255 h / 年</td></tr>
+        <tr><td>卓越風向</td><td class="n">東（47.1 %）</td></tr>
+        <tr><td>同 平均風速</td><td class="n">4.4 m/s</td></tr>
+        <tr><td>次点風向</td><td class="n">南東（25.3 %, 4.2 m/s）</td></tr>
+        <tr><td>平均外気温</td><td class="n">28.3 ℃</td></tr>
+      </table>
+      <div class="note">卓越風が東に強く偏るため、CFDの開口は<b>東（風上）・西（風下）</b>に設定し、最も換気が成立しやすい条件を評価した。</div>
+    </div>
+  </div>
+
+  <h2>解析環境の構築</h2>
+  <p>Rhino 8 には Ladybug Tools が未導入だったため、GUIインストーラを使わず以下を構築した。CFD用の Butterfly プラグインは2022年で更新・配布とも終了しているため、OpenFOAM は Docker で直接運用している。</p>
+  <div class="grid2" style="font-size:6.9pt">
+    <ul style="margin:0">
+      <li><b>Ladybug コンポーネント 1.72.5</b> — <code>.ghuser</code> 122個</li>
+      <li><b>ladybug / honeybee Python</b> — 約320 MB を Rhino 8 の <code>scripts</code>（IronPython 2.7）へ</li>
+      <li><b>Radiance 6.0.2</b> — arm64ネイティブ、<code>RAYPATH</code> 永続化</li>
+    </ul>
+    <ul style="margin:0">
+      <li><b>OpenFOAM v2412</b> — Docker <code>opencfd/openfoam-default</code>。arm64 マニフェストで実行</li>
+      <li><b>EnergyPlus 24.2.0</b> — OpenStudioApplication 1.9.0 同梱。導入済みだが本レポートでは未使用</li>
+    </ul>
+  </div>
+
+  <div class="foot">環境解析レポート — Candela HPシェル ／ 1 / 5</div>
+</div>
+
+<!-- ══════════════════ PAGE 2 ══════════════════ -->
+<div class="page">
+  <h2>1. 対象形状とモデル化</h2>
+
+  <h3>1.1 幾何構成</h3>
+  <p>屋根は <b>n 枚の双曲放物面が中央クラウンで交わるグロインヴォールト</b>である。各 HP 曲面は隣接する2本のグロイン（谷折れ線）を自身の直線生成母線として持つため、グロインはクラウンから接地点まで完全な直線となる。HP 曲面の2つの生成直線族は直交する必要がないので、この構成は任意の弁数に一般化でき、平面セクター角 360°/n の扇形をそのまま母線方向に取ればよい。本モデルでは n = 8 とした。</p>
+  <p>Los Manantiales では自由端が鉛直平面による切断（＝平面形が直線）で、その結果として先端が鋭い凧形になる。一方 Valencia の花弁は先端が丸く幅広い。そこで本モデルではシェル面自体は厳密な HP 曲面のまま、<b>トリム輪郭のみ</b>を「谷ではグロイン方向に接し、先端で丸く膨らむ曲線」に置き換えている。膨らみ量は <code>lobe_bluntness</code> で制御する。</p>
+
+  <div class="grid2">
+    <div>
+      <h3>1.2 主要寸法</h3>
+      <table>
+        <tr><th style="width:52%">パラメータ</th><th>値</th></tr>
+        <tr><td>弁数 <code>lobe_count</code></td><td class="n">8</td></tr>
+        <tr><td>先端半径 <code>R_tip</code>（先端間スパン）</td><td class="n">20.0 m（40.0 m）</td></tr>
+        <tr><td>支点半径 <code>R_support</code>（接地リング径）</td><td class="n">16.0 m（32.0 m）</td></tr>
+        <tr><td>クラウン高 <code>h_crown</code></td><td class="n">6.5 m</td></tr>
+        <tr><td>花弁先端高 <code>h_tip</code></td><td class="n">11.5 m</td></tr>
+        <tr><td>輪郭の丸み <code>lobe_bluntness</code></td><td class="n">1.2</td></tr>
+        <tr><td>ガラスのセットバック <code>glass_setback</code></td><td class="n">0.62</td></tr>
+        <tr><td>ガラス囲い内の容積</td><td class="n">1,494 m³</td></tr>
+        <tr><td>ガラス囲い内の床面積</td><td class="n">411 m²</td></tr>
+        <tr><td>平均天井高</td><td class="n">3.63 m</td></tr>
+      </table>
+      <div class="note">寸法はいずれも<b>推定値</b>である。Valencia の実測寸法は確認できていないため、写真のシルエットに合致するようパラメータを調整した。7本のスライダーで全て可変。</div>
+    </div>
+    <div>
+      <h3>1.3 幾何の検算</h3>
+      <p>形状生成にあたり、以下2点を毎回数値で検証している。</p>
+      <table>
+        <tr><th style="width:62%">検証項目</th><th>結果</th></tr>
+        <tr><td>グロインの着地標高（0でなければ接地しない）</td><td class="n">0.000 mm</td></tr>
+        <tr><td>自由端の最低標高（負なら地面に潜る）</td><td class="n">+0.00 m</td></tr>
+        <tr><td>自由端の最高標高（＝先端高）</td><td class="n">+11.50 m</td></tr>
+      </table>
+      <p>輪郭を丸くすると自由端が地面より下に潜る危険があるが、<code>lobe_bluntness</code> を振りながら自由端の最低標高を監視することで、8つの接地点でのみ地面に接する状態を保っている。</p>
+
+      <h3>1.4 エンベロープ構成</h3>
+      <table>
+        <tr><th style="width:30%">要素</th><th>モデル化</th></tr>
+        <tr><td>シェル</td><td>HP曲面8枚。実厚（4 cm級）は未モデル化、CFDではゼロ厚バッフル</td></tr>
+        <tr><td>ガラス</td><td>平面形輪郭を 0.62 倍に内側オフセットし、地面からシェル下面まで立ち上げた8ベイ</td></tr>
+        <tr><td>テラス</td><td>シェル外形と同一の平板スラブ</td></tr>
+        <tr><td>方位</td><td>北 = +Y（地理方位は未設定、Ladybug既定）</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <h3>1.5 解析対象としての特徴</h3>
+  <p>この形状は環境的に3つの明確な性格を持ち、それが後段の各解析結果を規定している。第一に、<b>花弁が外側に倒れている</b>ため、上から見える面はその倒れた向きと反対を向く。第二に、<b>シェルが大きく跳ね出す</b>ため、ガラス面に対して深い庇として働く。第三に、<b>接地点が8つに限られる</b>ため周囲が大きく開放され、開口を設けた際の換気抵抗が極めて小さい。</p>
+
+  <figure style="width:92mm;margin:1mm auto 0">
+    <img src="../05_images/radiation/radiation_plan.png">
+    <figcaption>屋根面の平面図（年間日射量で着色）。8弁の水蓮形と、外側に倒れた花弁の上面が示す方位依存性が読み取れる。内側の細線がガラスの平面位置。</figcaption>
+  </figure>
+
+  <div class="foot">環境解析レポート — Candela HPシェル ／ 2 / 5</div>
+</div>
+
+<!-- ══════════════════ PAGE 3 ══════════════════ -->
+<div class="page">
+  <h2>2. 年間日射量解析</h2>
+
+  <div class="grid2">
+    <div>
+      <h3>2.1 手法</h3>
+      <p>Ladybug Tools により、<code>LB Import EPW</code> → <code>LB Cumulative Sky Matrix</code> → <code>LB Incident Radiation</code> のフローで年間積算日射量を算出した。天空マトリクスは Radiance の <code>gendaymtx</code> により Tregenza 145パッチで生成し、直達・拡散の2成分を持つ。入射計算は CAD 側のレイ交差を用いる。</p>
+      <table>
+        <tr><th style="width:52%">設定</th><th>値</th></tr>
+        <tr><td>解析グリッド</td><td class="n">1.0 m</td></tr>
+        <tr><td>解析点数</td><td class="n">5,264</td></tr>
+        <tr><td>天空分割</td><td class="n">145 パッチ ×2</td></tr>
+        <tr><td>対象面</td><td>シェル上面・下面</td></tr>
+        <tr><td>相互反射</td><td>考慮しない</td></tr>
+        <tr><td>地面反射</td><td>擬似地面半球のみ</td></tr>
+      </table>
+
+      <h3>2.2 結果</h3>
+      <table>
+        <tr><th style="width:52%">年間積算日射量</th><th>kWh/m²·年</th></tr>
+        <tr><td>最小</td><td class="n">136</td></tr>
+        <tr><td>第1四分位</td><td class="n">907</td></tr>
+        <tr><td>中央値</td><td class="n">1,332</td></tr>
+        <tr><td>平均</td><td class="n">1,290</td></tr>
+        <tr><td>第3四分位</td><td class="n">1,704</td></tr>
+        <tr><td>最大</td><td class="n">2,083</td></tr>
+        <tr><td><b>シェル全体 受熱量</b></td><td class="n"><b>1.94 GWh/年</b></td></tr>
+      </table>
+      <p>最大値 2,083 kWh/m² はバレンシアの水平面全天日射量（概ね 1,700〜1,800 kWh/m²）を上回るが、これは南に傾いた面が水平面より多く受熱するためで、妥当な範囲にある。</p>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <figure><img src="../05_images/radiation/radiation_aerial.png"><figcaption>俯瞰。外側に倒れた花弁の上面が示す方位依存性。北側ロブ上面が最大（赤）、南側ロブ上面が最小（青）。</figcaption></figure>
+    <figure><img src="../05_images/radiation/radiation_eyelevel.png"><figcaption>アイレベル。手前（南）の花弁上面は青、奥（北）は赤。シェル下面は跳ね出しにより一貫して低い。</figcaption></figure>
+  </div>
+
+  <h3>2.3 考察 — 花弁の傾きが日射を反転させる</h3>
+  <p>平面図（前ページ図）で最も特徴的なのは、<b>北側の花弁が赤く、南側が青い</b>という一見逆の分布である。これは幾何から素直に説明できる。花弁は外側に倒れているため、上から見える面の法線は「倒れた向きと反対」を向く。すなわち南に倒れた花弁の上面は北を向き、北に倒れた花弁の上面は南を向く。結果として、平面図上の南側ロブが最小（約 500〜700 kWh/m²）、北側ロブが最大（約 2,000 kWh/m²）となる。</p>
+  <p>設計的な含意として、<b>集熱・太陽光発電を考えるなら北側ロブの上面が最有力</b>であり、逆に南側ロブの上面は年間を通して日射が少ないため、トップライトなど採光要素を置いても熱負荷の増加が小さい。またシェル下面（内側）は 136〜900 kWh/m² 程度に留まり、跳ね出しが庇として有効に機能していることが分かる。</p>
+
+  <div class="warn"><b>限界:</b> 本解析はシェル面同士・地面との相互反射を含まない。白色コンクリートの高反射率を考えると、実際の下面受熱量は本結果より大きくなる。厳密に評価する場合は honeybee-radiance による年間放射計算に置き換える必要がある。</div>
+
+  <div class="foot">環境解析レポート — Candela HPシェル ／ 3 / 5</div>
+</div>
+
+<!-- ══════════════════ PAGE 4 ══════════════════ -->
+<div class="page">
+  <h2>3. 室内グレア解析</h2>
+
+  <div class="grid2">
+    <div>
+      <h3>3.1 手法</h3>
+      <p>Radiance により、室内からガラス越しに外を見た場合の輝度分布と不快グレア指標 DGP を算出した。Honeybee のレシピ系（queenbee ランナー）は未構築のため、Radiance のコマンド列を直接実行するパイプラインを構成した。</p>
+      <p style="font-size:7.8pt"><code>gendaylit</code> → <code>oconv</code> → <code>rpict</code>（180°等角魚眼）→ <code>evalglare</code> / <code>falsecolor</code></p>
+      <table>
+        <tr><th style="width:46%">設定</th><th>値</th></tr>
+        <tr><td>日時</td><td class="n">6月21日 17:00</td></tr>
+        <tr><td>太陽高度／方位</td><td class="n">38.1° / 270.5°（ほぼ真西）</td></tr>
+        <tr><td>法線面直達日射</td><td class="n">657 W/m²</td></tr>
+        <tr><td>水平面拡散日射</td><td class="n">85 W/m²</td></tr>
+        <tr><td>視点位置</td><td class="n">中心から 6 m、高さ 1.60 m</td></tr>
+        <tr><td>視線方向</td><td class="n">西（太陽方位）</td></tr>
+        <tr><td>画角・解像度</td><td class="n">180° 魚眼 / 800×800</td></tr>
+        <tr><td>間接反射</td><td class="n">-ab 2, -ad 1024</td></tr>
+      </table>
+      <h3>3.2 材質の仮定</h3>
+      <table>
+        <tr><th style="width:46%">要素</th><th>値</th></tr>
+        <tr><td>シェル（コンクリート）</td><td class="n">反射率 0.60</td></tr>
+        <tr><td>テラス</td><td class="n">反射率 0.25</td></tr>
+        <tr><td>ガラス</td><td class="n">透過率 0.68 / 0.72 / 0.75（RGB）</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>3.3 結果</h3>
+      <table>
+        <tr><th style="width:56%">指標</th><th>値</th></tr>
+        <tr><td><b>DGP（Daylight Glare Probability）</b></td><td class="n"><b>0.382</b></td></tr>
+        <tr><td>グレア評価</td><td class="n">disturbing（不快）</td></tr>
+        <tr><td>鉛直面照度 E<sub>v</sub></td><td class="n">2,724 lx</td></tr>
+        <tr><td>最大輝度 L<sub>max</sub></td><td class="n">2,245 cd/m²</td></tr>
+      </table>
+      <p style="font-size:7.8pt">DGP の一般的な区分は 0.35 未満＝知覚可能以下、0.35–0.40＝不快、0.40–0.45＝妨害、0.45 以上＝耐え難い。本ケースは不快域の下限付近に位置する。</p>
+    </div>
+  </div>
+
+  <figure style="width:150mm;margin:1mm auto 0">
+    <img src="../05_images/glare/glare_interior_fisheye.png">
+    <figcaption>室内から西を見た 180° 等角魚眼。左：人間の見えに近いトーンマップ。右：輝度の偽色表示（0〜3,000 cd/m²）。頭上のシェル軒裏は 100 cd/m² 未満と暗く、飽和しているのはアーチ開口部のみ。太陽面は視野に入っていない。</figcaption>
+  </figure>
+
+  <h3>3.4 考察 — グレア源は太陽ではなく開口面積</h3>
+  <p>注目すべきは <b>最大輝度が 2,245 cd/m² に留まっている</b>点である。太陽面が直接視野に入っていれば 10⁵〜10⁸ cd/m² のオーダーになるため、この値は<b>この視点から太陽面が直接見えていない</b>ことを意味する。太陽高度 38° の西日に対して、大きく跳ね出したシェルが庇として有効に機能している。</p>
+  <p>にもかかわらず DGP が不快域に達するのは、鉛直面照度 E<sub>v</sub> が 2,724 lx と高いためである。DGP は光源輝度項と鉛直面照度項の和で構成されるが、本ケースでは後者が支配的である。すなわち<b>グレアの原因は一点の眩しさではなく、明るい開口が視野に占める面積の大きさ</b>にある。</p>
+  <p>この構造は対策の方向を規定する。庇をさらに深くしても L<sub>max</sub> は既に低いため効果は限定的で、有効なのは<b>開口面の輝度そのものを下げること</b>（ガラスの可視光透過率低減、外付けルーバー、あるいは視線高さ付近のみの遮蔽）である。逆に言えば、シェル形状による日射遮蔽は既に十分機能しており、形状変更で解く問題ではない。</p>
+
+  <div class="warn"><b>限界:</b> 単一視点・単一時刻の評価である。年間のグレア発生頻度（DGP 超過時間率）を評価するには、複数視点での annual glare 計算が必要。また周辺環境（池の反射、植栽、隣接建物）は未モデル化で、実際の水面反射はグレアを増加させる方向に働く。</div>
+
+  <div class="foot">環境解析レポート — Candela HPシェル ／ 4 / 5</div>
+</div>
+
+<!-- ══════════════════ PAGE 5 ══════════════════ -->
+<div class="page">
+  <h2>4. 自然換気CFD解析</h2>
+
+  <div class="grid2">
+    <div>
+      <h3>4.1 手法・条件</h3>
+      <p>風力と浮力を同時に解くため <code>buoyantBoussinesqSimpleFoam</code>（非圧縮＋Boussinesq浮力＋温度輸送、定常RANS）を使用した。シェルとガラスはゼロ厚のバッフルとして扱い、8ベイのうち<b>東（風上）と西（風下）の2ベイのガラスを除去</b>して開口とした。</p>
+      <table>
+        <tr><th style="width:46%">項目</th><th>値</th></tr>
+        <tr><td>計算領域</td><td class="n">210 × 140 × 60 m</td></tr>
+        <tr><td>セル数</td><td class="n">758,244</td></tr>
+        <tr><td>乱流モデル</td><td class="n">k-ε</td></tr>
+        <tr><td>流入 ABL</td><td class="n">4.4 m/s @ 10 m, z₀ = 0.5</td></tr>
+        <tr><td>外気温</td><td class="n">28.3 ℃</td></tr>
+        <tr><td>テラス床面温度</td><td class="n">35 ℃</td></tr>
+        <tr><td>シェル表面温度</td><td class="n">33 ℃</td></tr>
+        <tr><td>ガラス表面温度</td><td class="n">31 ℃</td></tr>
+        <tr><td>反復数／計算時間</td><td class="n">900 / 578 s（8並列）</td></tr>
+      </table>
+      <h3>4.2 結果</h3>
+      <table>
+        <tr><th style="width:56%">指標</th><th>値</th></tr>
+        <tr><td>通過風量</td><td class="n">110 m³/s</td></tr>
+        <tr><td><b>換気回数</b></td><td class="n"><b>265 ACH</b></td></tr>
+        <tr><td>断面平均風速</td><td class="n">0.81 m/s</td></tr>
+        <tr><td>室内断面積（東西軸直交）</td><td class="n">136 m²</td></tr>
+      </table>
+    </div>
+    <div>
+      <figure>
+        <img src="../05_images/cfd/cfd_vel_z012.png" style="max-height:54mm;object-fit:contain">
+        <figcaption>水平断面 z = 1.2 m の風速。東西軸に幅8 m程度のジェットが貫通する一方、南北の閉じた花弁は 0〜1 m/s で滞留する。</figcaption>
+      </figure>
+      <figure>
+        <img src="../05_images/cfd/cfd_temp_z012.png" style="max-height:60mm;object-fit:contain">
+        <figcaption>同断面の温度。東から入った 30〜31 ℃の空気が床で熱を拾い、西へ 32〜33 ℃で抜ける。</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <h3>4.3 考察 — ショートサーキットと滞留</h3>
+  <p>265 ACH という値は異常値ではなく、幅約 9 m・高さ約 5 m のガラス壁を2面まるごと除去した結果である。この状態はもはや「窓を開けた室内」ではなく<b>半屋外パビリオン</b>であり、居住域に 3〜4 m/s の風が吹き抜ける。快適性の観点では明らかに過大で、実用上は開口面積を絞るか可動制御が必要になる。</p>
+  <p>より重要な知見は<b>換気の偏り</b>である。開口を設けた東西軸のみをジェットが直進し、残る6弁は 0〜1 m/s でほとんど空気が入れ替わらない。8弁のうち2弁を対向させて開ける配置は、換気量は稼げても<b>室内全体を均一に換気しない</b>。放射状の平面形に対しては、対向2点ではなく円周方向に分散した複数開口、あるいは中央クラウン付近の頂部排気（浮力を利用したスタック効果）との併用が有効と考えられる。</p>
+  <p>温度分布では、床面近傍に厚さ 1 m 程度の高温層（33〜35 ℃）が形成され、その上は外気温近くまで戻る。通過風量が大きいため躯体からの熱がほとんど蓄積されず、<b>室温上昇は 2〜3 K に抑えられている</b>。</p>
+
+  <div class="warn"><b>解析上の注意:</b> 速度・温度の残差は 10⁻⁵ 台まで低下したが、<b>圧力残差は 1.4×10⁻³ で目標 10⁻³ に未達</b>である。分布の傾向は信頼できるが、風量の絶対値には数%オーダーの不確かさが残る。また日射解析との連成は行っておらず、表面温度は仮定値である。</div>
+
+  <h2>5. 総括と今後</h2>
+  <p>3種の解析を通じて一貫して現れたのは、<b>この形状の環境性能が「花弁の傾き」と「跳ね出し量」という2つの幾何パラメータにほぼ支配される</b>という点である。花弁の傾きは屋根面の受熱分布を方位に対して反転させ、跳ね出しは太陽面の直視を遮ることで最大輝度を抑えている。一方で、接地点が8点に限られる開放的な構成は換気抵抗をほとんど持たないため、開口設計は「取れるかどうか」ではなく「絞り方と分散のさせ方」の問題になる。</p>
+  <p>次の展開としては、(1) 日射解析結果を CFD の表面温度境界条件に与えた連成、(2) 開口配置のパラメトリック比較（対向2点／直交2点／分散4点／頂部排気併用）、(3) 既に導入済みの EnergyPlus 24.2.0 と honeybee-energy の AirflowNetwork による年間8760時間の自然換気成立時間率の評価、が有効と考えられる。特に (3) は CFD が答えられない「年間で何時間その換気が使えるか」を扱うため、CFD の空間分布評価と相補的である。</p>
+
+  <table style="margin-top:2mm;font-size:6.7pt">
+    <tr><th style="width:34%">成果物</th><th>内容</th></tr>
+    <tr><td><code>valencia_submarino.gh / .3dm</code></td><td>形状生成の Grasshopper 定義（7スライダー）と Rhino モデル</td></tr>
+    <tr><td><code>valencia_submarino_radiation.gh</code></td><td>Ladybug 日射解析フローを含む定義</td></tr>
+    <tr><td><code>radiation_*.png</code>（3枚）</td><td>年間日射量：俯瞰・平面・アイレベル</td></tr>
+    <tr><td><code>glare_*.png</code>（2枚）</td><td>室内グレア：魚眼トーンマップ＋輝度偽色</td></tr>
+    <tr><td><code>cfd_vel_*.png / cfd_temp_*.png</code>（16枚）</td><td>CFD：水平5断面・鉛直3断面 × 風速／温度</td></tr>
+    <tr><td><code>cfd_case/</code></td><td>OpenFOAM ケース一式（辞書・境界条件・作図スクリプト）</td></tr>
+  </table>
+
+  <div class="foot">環境解析レポート — Candela HPシェル ／ 5 / 5</div>
+</div>

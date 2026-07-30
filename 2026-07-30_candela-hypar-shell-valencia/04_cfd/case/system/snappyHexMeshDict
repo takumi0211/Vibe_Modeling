@@ -1,0 +1,69 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| Candela hypar shell - natural ventilation, buoyantBoussinesqSimpleFoam       |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version 2.0; format ascii; class dictionary; location "system"; object snappyHexMeshDict;
+}
+
+castellatedMesh true;
+snap            true;
+addLayers       false;
+
+geometry
+{
+    shell.stl   { type triSurfaceMesh; name shell; }
+    glazing.stl { type triSurfaceMesh; name glazing; }
+    nearBox     { type searchableBox; min (-40 -40 0); max (40 40 26); }
+    innerBox    { type searchableBox; min (-26 -26 0); max (26 26 16); }
+}
+
+castellatedMeshControls
+{
+    maxLocalCells   4000000;
+    maxGlobalCells  8000000;
+    minRefinementCells 0;
+    nCellsBetweenLevels 2;
+    maxLoadUnbalance 0.1;
+    resolveFeatureAngle 40;
+    allowFreeStandingZoneFaces true;
+    features ();
+    refinementSurfaces
+    {
+        shell   { level (3 3); faceZone shellFaces;   faceType baffle; }
+        glazing { level (3 3); faceZone glazingFaces; faceType baffle; }
+    }
+    refinementRegions
+    {
+        nearBox  { mode inside; levels ((1e15 2)); }
+        innerBox { mode inside; levels ((1e15 3)); }
+    }
+    locationInMesh (60.0 55.0 30.0);
+}
+
+snapControls
+{
+    nSmoothPatch 3; tolerance 2.0; nSolveIter 40; nRelaxIter 6;
+    nFeatureSnapIter 10; implicitFeatureSnap false;
+    explicitFeatureSnap true; multiRegionFeatureSnap false;
+}
+
+addLayersControls
+{
+    relativeSizes true; layers {}; expansionRatio 1.2;
+    finalLayerThickness 0.4; minThickness 0.1; nGrow 0;
+    featureAngle 60; nRelaxIter 5; nSmoothSurfaceNormals 1;
+    nSmoothNormals 3; nSmoothThickness 10; maxFaceThicknessRatio 0.5;
+    maxThicknessToMedialRatio 0.3; minMedialAxisAngle 90; nBufferCellsNoExtrude 0;
+    nLayerIter 50;
+}
+
+meshQualityControls
+{
+    maxNonOrtho 68; maxBoundarySkewness 20; maxInternalSkewness 4;
+    maxConcave 80; minVol 1e-13; minTetQuality -1; minArea -1;
+    minTwist 0.02; minDeterminant 0.001; minFaceWeight 0.02;
+    minVolRatio 0.01; minTriangleTwist -1; nSmoothScale 4;
+    errorReduction 0.75;
+}
+mergeTolerance 1e-6;

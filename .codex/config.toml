@@ -1,0 +1,7 @@
+[mcp_servers.rhino]
+command = "uvx"
+args = [
+    "--with",
+    "mcp<2",
+    "rhinomcp",
+]

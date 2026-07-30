@@ -1,0 +1,14 @@
+void plastic shell_conc
+0
+0
+5 0.60 0.59 0.57 0 0
+
+void plastic terrace_conc
+0
+0
+5 0.25 0.24 0.23 0 0
+
+void glass vision_glass
+0
+0
+3 0.68 0.72 0.75

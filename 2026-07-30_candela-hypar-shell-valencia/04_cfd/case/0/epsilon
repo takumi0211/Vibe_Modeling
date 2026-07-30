@@ -1,0 +1,20 @@
+FoamFile
+{
+    version 2.0; format ascii; class volScalarField; location "0"; object epsilon;
+}
+
+dimensions [0 2 -3 0 0 0 0];
+internalField uniform 0.1;
+boundaryField
+{
+    inlet
+    {
+        type atmBoundaryLayerInletEpsilon; flowDir (-1 0 0); zDir (0 0 1);
+        Uref 4.4; Zref 10; z0 uniform 0.5; d uniform 0; value uniform 0.1;
+    }
+    outlet  { type inletOutlet; inletValue uniform 0.1; value uniform 0.1; }
+    top     { type zeroGradient; }
+    sides   { type zeroGradient; }
+    ground  { type epsilonWallFunction; value uniform 0.1; }
+    "(shell|glazing).*" { type epsilonWallFunction; value uniform 0.1; }
+}

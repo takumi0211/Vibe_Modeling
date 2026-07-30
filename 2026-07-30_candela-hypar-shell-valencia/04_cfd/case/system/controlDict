@@ -1,0 +1,24 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| Candela hypar shell - natural ventilation, buoyantBoussinesqSimpleFoam       |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version 2.0; format ascii; class dictionary; location "system"; object controlDict;
+}
+
+application     buoyantBoussinesqSimpleFoam;
+libs            ("libatmosphericModels.so");
+startFrom       latestTime;
+startTime       0;
+stopAt          endTime;
+endTime         900;
+deltaT          1;
+writeControl    timeStep;
+writeInterval   300;
+purgeWrite      2;
+writeFormat     ascii;
+writePrecision  7;
+writeCompression off;
+timeFormat      general;
+timePrecision   6;
+runTimeModifiable true;

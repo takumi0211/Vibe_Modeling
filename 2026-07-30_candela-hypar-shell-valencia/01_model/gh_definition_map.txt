@@ -1,0 +1,19 @@
+Grasshopper definition map - valencia_submarino.gh
+
+Component: Python 3 Script (GhPython / IronPython 2.7), nickname 'Candela hypar vault'
+  inputs : x, y, z, w, v, u, n
+  outputs: out, a, b, c
+
+Sliders  nickname          value      range          -> script input
+  R_support_m         16.00   [     3 .. 20    ]  -> z
+  R_tip_m             20.00   [    10 .. 32    ]  -> v
+  glass_setback        0.62   [   0.4 .. 0.98  ]  -> w
+  grid_size_mm      1000.00   [   300 .. 3000  ]  -> ?
+  h_crown_m            6.50   [     2 .. 16    ]  -> x
+  h_tip_m             11.50   [     2 .. 25    ]  -> y
+  lobe_bluntness       1.20   [   0.4 .. 5     ]  -> u
+  lobe_count           8.00   [     3 .. 12    ]  -> n
+
+Outputs: a = shell Brep, b = glazing Brep, c = terrace slab Brep
+The script body is stored in src/candela_hypar_vault.py and is installed into
+the component with GH_UserObject/SetSource (see README, section 'GH script injection').

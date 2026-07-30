@@ -1,0 +1,41 @@
+FoamFile
+{
+    version 2.0; format ascii; class dictionary; location "system"; object openings;
+}
+// volumetric flow through each of the two open glazing bays.
+// The bay spans +-22.5 deg about its axis at a glass radius of ~10-12.4 m,
+// so the sampling plane is clipped to that width to avoid catching flow
+// that passes through the notches instead of the opening.
+openingEast
+{
+    type            surfaceFieldValue;
+    libs            ("libfieldFunctionObjects.so");
+    log             true;
+    writeFields     false;
+    writeControl    onEnd;
+    regionType      sampledSurface;
+    name            eastOpening;
+    sampledSurfaceDict
+    {
+        type        plane;
+        planeType   pointAndNormal;
+        pointAndNormalDict { point (10.0 0 0); normal (1 0 0); }
+        bounds      (9.5 -4.5 0) (10.5 4.5 9);
+        interpolate false;
+    }
+    operation       sum;
+    fields          (phi);
+}
+openingWest
+{
+    $openingEast
+    name            westOpening;
+    sampledSurfaceDict
+    {
+        type        plane;
+        planeType   pointAndNormal;
+        pointAndNormalDict { point (-10.0 0 0); normal (1 0 0); }
+        bounds      (-10.5 -4.5 0) (-9.5 4.5 9);
+        interpolate false;
+    }
+}
